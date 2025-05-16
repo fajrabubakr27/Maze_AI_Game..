@@ -175,7 +175,7 @@ if st.button("Solve Maze"):
         for x, y in path:
             if maze_copy[x][y] not in ['S', 'E']:
                 maze_copy[x][y] = '*'
-        maze_str = '\n'.join([' '.join(row) for row in maze_copy])
+        maze_str = '\n'.join([' '.join(str(cell) for cell in row) for row in maze_copy])
         st.text(maze_str)
     else:
         st.error("No path found!")
