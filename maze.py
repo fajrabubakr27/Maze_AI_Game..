@@ -213,7 +213,6 @@ print_maze_with_path(maze, best_path)
 print("\nPSO Best Path:")
 print_maze_with_path(maze, global_best_path)
 
-!pip install streamlit
 
 import streamlit as st
 
