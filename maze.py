@@ -33,6 +33,31 @@ def is_valid_move(maze, position):
 new_position = (start[0], start[1] + 1)
 print("Valid move?" , is_valid_move(maze, new_position))
 
+import math
+
+alpha = 1.0
+beta = 2.0
+
+def heuristic(cell, end):
+    return 1.0 / (math.dist(cell, end) + 1e-6)
+
+def select_next_cell(current, neighbors, pheromone, end):
+    probabilities = []
+    total = 0
+
+    for cell in neighbors:
+        y, x = cell
+        pher = pheromone[y][x] ** alpha
+        heur = heuristic(cell, end) ** beta
+        prob = pher * heur
+        probabilities.append(prob)
+        total += prob
+
+    probabilities = [p / total for p in probabilities]
+
+    next_cell = random.choices(neighbors, weights=probabilities, k=1)[0]
+    return next_cell
+
 import random
 
 pheromone = [[0.1 for _ in range(len(maze[0]))] for _ in range(len(maze))]
@@ -62,31 +87,6 @@ def ant_walk(maze, pheromone, start, end, max_steps=100):
 
 ant_path = ant_walk(maze, pheromone, start, end)
 print("Ant path:", ant_path)
-
-import math
-
-alpha = 1.0
-beta = 2.0
-
-def heuristic(cell, end):
-    return 1.0 / (math.dist(cell, end) + 1e-6)
-
-def select_next_cell(current, neighbors, pheromone, end):
-    probabilities = []
-    total = 0
-
-    for cell in neighbors:
-        y, x = cell
-        pher = pheromone[y][x] ** alpha
-        heur = heuristic(cell, end) ** beta
-        prob = pher * heur
-        probabilities.append(prob)
-        total += prob
-
-    probabilities = [p / total for p in probabilities]
-
-    next_cell = random.choices(neighbors, weights=probabilities, k=1)[0]
-    return next_cell
 
 num_ants = 10
 num_iterations = 20
